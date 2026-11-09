@@ -1,8 +1,8 @@
 :root {
-  --bg: #f4f5f3;
+  --bg: #e9e2d7;
   --panel: #ffffff;
-  --border: rgba(37, 49, 65, 0.1);
-  --shadow: 0 10px 28px rgba(34, 48, 65, 0.055);
+  --border: rgba(57, 48, 37, 0.12);
+  --shadow: 0 10px 28px rgba(55, 45, 33, 0.07);
 }
 
 html,
@@ -11,36 +11,44 @@ body {
 }
 
 body {
-  background: #f4f5f3;
+  background-color: #e9e2d7;
+  background-image:
+    radial-gradient(ellipse at 92% 8%, rgba(201, 215, 198, 0.42), transparent 34rem),
+    radial-gradient(ellipse at 8% 88%, rgba(228, 210, 184, 0.34), transparent 32rem);
+  background-attachment: fixed;
 }
 
 .app-shell {
-  background:
-    radial-gradient(ellipse at 86% 4%, rgba(218, 231, 225, 0.38), transparent 34rem),
-    #f4f5f3;
+  min-height: 100vh;
+  background: transparent;
 }
 
 .main-panel,
 .course-shell,
 .exam-shell {
-  background-color: transparent;
+  background: transparent;
+}
+
+.course-shell,
+.exam-shell {
+  min-height: 100vh;
 }
 
 .landing-shell {
   background:
-    radial-gradient(ellipse at 14% 12%, rgba(203, 222, 214, 0.52), transparent 32rem),
-    radial-gradient(ellipse at 88% 90%, rgba(223, 229, 217, 0.55), transparent 34rem),
-    #f4f5f3;
+    radial-gradient(ellipse at 14% 12%, rgba(201, 215, 198, 0.5), transparent 32rem),
+    radial-gradient(ellipse at 88% 90%, rgba(228, 210, 184, 0.45), transparent 34rem),
+    #e9e2d7;
 }
 
 .landing-hero {
-  background: rgba(255, 255, 255, 0.82);
-  border-color: rgba(37, 49, 65, 0.1);
-  box-shadow: 0 24px 70px rgba(34, 48, 65, 0.09);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(57, 48, 37, 0.12);
+  box-shadow: 0 24px 70px rgba(55, 45, 33, 0.1);
 }
 
 .panel {
-  box-shadow: 0 8px 24px rgba(34, 48, 65, 0.045);
+  box-shadow: 0 8px 24px rgba(55, 45, 33, 0.055);
 }
 
 .course-card {
@@ -54,6 +62,6 @@ body {
   }
 
   .course-card:hover {
-    box-shadow: 0 14px 30px rgba(34, 48, 65, 0.09);
+    box-shadow: 0 14px 30px rgba(55, 45, 33, 0.11);
   }
 }
