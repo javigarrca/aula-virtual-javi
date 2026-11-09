@@ -1,7 +1,15 @@
 export type Role = 'admin' | 'student';
 
 export type Material = { id: string; title: string; type: 'pdf' | 'link' | 'video'; url: string };
-export type Module = { id: string; title: string; objective: string; lessons: string[] };
+export type ModuleResource = {
+  id: string;
+  title: string;
+  type: 'link' | 'task';
+  description: string;
+  url?: string;
+  dueDate?: string;
+};
+export type Module = { id: string; title: string; objective: string; lessons: string[]; resources?: ModuleResource[] };
 export type Assignment = {
   id: string; title: string; description: string; dueDate: string;
   type: 'upload' | 'text' | 'quiz' | 'self-evaluation';
@@ -22,15 +30,9 @@ export type ExamQuestion = {
 export type Exam = { id: string; title: string; durationMinutes: number; attempts: number; questions: ExamQuestion[] };
 export type ExamAnswer = string | string[] | Record<string, string>;
 export type ExamAttempt = {
-  id: string;
-  examId: string;
-  courseId: string;
-  studentId: string;
-  answers: Record<string, ExamAnswer>;
-  earnedPoints: number;
-  totalPoints: number;
-  percentage: number;
-  submittedAt: string;
+  id: string; examId: string; courseId: string; studentId: string;
+  answers: Record<string, ExamAnswer>; earnedPoints: number; totalPoints: number;
+  percentage: number; submittedAt: string;
 };
 export type Course = {
   id: string; title: string; category: string; teacher: string; description: string;

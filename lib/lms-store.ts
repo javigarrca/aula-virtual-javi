@@ -1,4 +1,4 @@
-import type { Course, Exam, ExamAnswer, ExamAttempt, ExamQuestion, StudentSummary } from '@/lib/types';
+import type { Course, Exam, ExamAnswer, ExamAttempt, ExamQuestion, ModuleResource, StudentSummary } from '@/lib/types';
 import { courses, students } from '@/lib/mock-data';
 
 export type LmsState = {
@@ -47,6 +47,32 @@ export function enrollStudent(state: LmsState, courseId: string, studentId: stri
   const current = state.enrollments[studentId] ?? [];
   if (current.includes(courseId)) return state;
   return { ...state, enrollments: { ...state.enrollments, [studentId]: [...current, courseId] } };
+}
+
+export function upsertModuleResource(state: LmsState, courseId: string, moduleId: string, resource: ModuleResource): LmsState {
+  return {
+    ...state,
+    courses: state.courses.map((course) => course.id !== courseId ? course : {
+      ...course,
+      modules: course.modules.map((module) => module.id !== moduleId ? module : {
+        ...module,
+        resources: [...(module.resources ?? []).filter((item) => item.id !== resource.id), resource],
+      }),
+    }),
+  };
+}
+
+export function deleteModuleResource(state: LmsState, courseId: string, moduleId: string, resourceId: string): LmsState {
+  return {
+    ...state,
+    courses: state.courses.map((course) => course.id !== courseId ? course : {
+      ...course,
+      modules: course.modules.map((module) => module.id !== moduleId ? module : {
+        ...module,
+        resources: (module.resources ?? []).filter((resource) => resource.id !== resourceId),
+      }),
+    }),
+  };
 }
 
 export function upsertExam(state: LmsState, courseId: string, exam: Exam): LmsState {

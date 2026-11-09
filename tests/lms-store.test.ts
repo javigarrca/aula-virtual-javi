@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { createCourse, enrollStudent, getInitialLmsState, gradeExam, upsertExam } from '../lib/lms-store';
-import type { Exam } from '../lib/types';
+import { createCourse, deleteModuleResource, enrollStudent, getInitialLmsState, gradeExam, upsertExam, upsertModuleResource } from '../lib/lms-store';
+import type { Exam, ModuleResource } from '../lib/types';
 
 describe('LMS course and enrollment operations', () => {
   it('creates a course with empty content sections', () => {
@@ -25,6 +25,17 @@ describe('LMS course and enrollment operations', () => {
     const initial = getInitialLmsState();
     const exam: Exam = { id: 'new-exam', title: 'Test', durationMinutes: 10, attempts: 1, questions: [] };
     expect(upsertExam(initial, 'curso-ux', exam).courses.find((course) => course.id === 'curso-ux')?.exams[0]).toEqual(exam);
+  });
+  it('adds, updates and removes resources in the selected topic', () => {
+    const initial = getInitialLmsState();
+    const resource: ModuleResource = { id: 'r1', title: 'Guía externa', type: 'link', description: 'Lectura', url: 'https://example.org' };
+    const added = upsertModuleResource(initial, 'curso-ux', 'mod-1', resource);
+    expect(added.courses.find((course) => course.id === 'curso-ux')?.modules[0].resources).toEqual([resource]);
+    const updated = upsertModuleResource(added, 'curso-ux', 'mod-1', { ...resource, title: 'Guía editada' });
+    expect(updated.courses.find((course) => course.id === 'curso-ux')?.modules[0].resources).toHaveLength(1);
+    expect(updated.courses.find((course) => course.id === 'curso-ux')?.modules[0].resources?.[0].title).toBe('Guía editada');
+    const removed = deleteModuleResource(updated, 'curso-ux', 'mod-1', 'r1');
+    expect(removed.courses.find((course) => course.id === 'curso-ux')?.modules[0].resources).toEqual([]);
   });
 });
 

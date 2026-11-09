@@ -1,105 +1,22 @@
-.muted-copy { color: var(--muted); line-height: 1.55; margin: 6px 0 0; }
-.panel-header > div h2 { margin: 0; }
-.panel-header .action-button { white-space: nowrap; }
-.role-controls { display: flex; padding: 5px; gap: 4px; background: #e8eef8; border-radius: 14px; }
-.role-controls button { border: 0; background: transparent; padding: 10px 15px; border-radius: 10px; cursor: pointer; color: var(--muted); font-weight: 700; }
-.role-controls button.active { background: white; color: var(--primary); box-shadow: 0 3px 10px rgba(20,40,80,.09); }
-.course-card { display: flex; flex-direction: column; }
-.course-card p { flex: 1; }
-.course-card-meta { display: flex; justify-content: space-between; gap: 10px; padding: 14px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
-.course-card-actions, .header-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-.course-card-actions > * { flex: 1; }
-.notice { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: #eaf5ee; border: 1px solid #cce8d4; color: #17613a; border-radius: 12px; padding: 13px 16px; margin: 12px 0 18px; }
-.notice > button:not(.action-button) { border: 0; background: transparent; cursor: pointer; font-size: 1.3rem; color: inherit; }
-.student-welcome { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
-.student-welcome h2 { margin: 8px 0 0; }
-.student-picker, .enroll-select { display: grid; gap: 7px; color: var(--muted); font-size: .83rem; font-weight: 600; }
-select, input, textarea { max-width: 100%; }
-.student-picker select, .enroll-select select, .form-stack input, .form-stack select, .form-stack textarea, .inline-add-form input { width: 100%; border: 1px solid var(--border); background: white; color: var(--text); border-radius: 10px; padding: 12px; }
-.student-picker select { min-width: 230px; }
-.empty-message { color: var(--muted); padding: 12px 0; line-height: 1.55; }
-.modal-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(15, 23, 42, .52); }
-.modal-card { width: min(540px, 100%); background: white; border-radius: 20px; padding: 24px; box-shadow: 0 24px 70px rgba(0,0,0,.24); max-height: 90vh; overflow-y: auto; }
-.modal-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.modal-heading h2 { margin: 0; }
-.modal-heading button { border: 0; background: #edf3ff; border-radius: 9px; width: 36px; height: 36px; font-size: 1.4rem; cursor: pointer; }
-.form-stack { display: grid; gap: 16px; }
-.form-stack label { display: grid; gap: 7px; font-size: .9rem; font-weight: 700; }
-.form-stack textarea { resize: vertical; }
-.form-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 6px; }
-.course-header { gap: 18px; }
-.course-header .muted-copy { max-width: 740px; }
-.course-topic { border-top: 1px solid var(--border); }
-.course-topic summary { list-style: none; display: flex; align-items: center; gap: 14px; padding: 17px 4px; cursor: pointer; }
-.course-topic summary::-webkit-details-marker { display: none; }
-.course-topic summary > span:nth-child(2) { flex: 1; display: grid; gap: 4px; }
-.course-topic summary small, .topic-count { color: var(--muted); font-size: .8rem; }
-.topic-number { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--primary-soft); color: var(--primary); font-weight: 700; }
-.course-topic ul { margin: 0 0 16px 48px; padding-left: 18px; color: var(--muted); line-height: 2; }
-.topic-empty { margin: 0 0 16px 48px; }
-.inline-add-form { display: flex; gap: 10px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
-.participant-panel .enroll-select { margin-bottom: 14px; }
-.participant-list { padding: 0; margin: 0; list-style: none; }
-.participant-list li { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid var(--border); }
-.participant-list li > span:nth-child(2) { flex: 1; display: grid; gap: 4px; min-width: 0; }
-.participant-list small { color: var(--muted); overflow-wrap: anywhere; }
-.avatar-circle { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 50%; background: #e9f0ff; color: var(--primary); font-size: .78rem; font-weight: 700; }
-.exam-link small { display: block; color: var(--muted); font-weight: 400; margin-top: 6px; }
-.action-button:disabled { opacity: .5; cursor: not-allowed; }
-button:hover, .action-button:hover, .ghost-button:hover { filter: brightness(.97); }
 
-/* Clearer LMS information hierarchy and responsive assessment builder */
-.back-link { display: inline-block; color: var(--primary); font-weight: 700; margin-bottom: 12px; }
-.exam-management-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
-.exam-management-list { display: grid; gap: 12px; }
-.exam-management-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: #fbfcff; }
-.exam-management-card h3 { margin: 10px 0 0; }
-.exam-management-card .action-button { white-space: nowrap; }
-.exam-builder-backdrop { align-items: start; overflow-y: auto; }
-.exam-builder { width: min(900px, 100%); margin: 16px auto; }
-.exam-builder .modal-heading h2 { margin-top: 5px; }
-.exam-settings-grid, .question-config-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
-.question-config-grid { grid-template-columns: 2fr 1fr; }
-.builder-section-title, .builder-subheading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.builder-section-title h3 { margin: 0; }
-.builder-question { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: #fbfcff; }
-.builder-question > label, .builder-question .form-stack label { display: grid; gap: 7px; font-weight: 700; }
-.builder-question input:not([type=checkbox]):not([type=radio]), .builder-question textarea, .builder-question select, .answer-input, .matching-list select { width: 100%; border: 1px solid var(--border); border-radius: 9px; background: white; color: var(--text); padding: 11px 12px; }
-.builder-question-head { display: flex; align-items: center; justify-content: space-between; }
-.builder-options { display: grid; gap: 9px; }
-.builder-option-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 34px; align-items: center; gap: 9px; }
-.correct-toggle { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: .82rem; white-space: nowrap; }
-.correct-toggle input { accent-color: var(--primary); }
-.text-button, .text-danger { background: transparent; border: 0; color: var(--primary); font-weight: 700; cursor: pointer; padding: 8px; }
-.text-danger { color: #b42318; }
-.icon-button { border: 0; border-radius: 8px; width: 34px; height: 34px; background: #fff0ef; color: #b42318; font-size: 1.2rem; cursor: pointer; }
-.matching-editor-row { display: grid; grid-template-columns: 1fr 24px 1fr 34px; gap: 8px; align-items: center; }
-.matching-editor-row > span { text-align: center; color: var(--muted); }
-.matching-list { display: grid; gap: 12px; }
-.matching-list label { display: grid; grid-template-columns: minmax(100px, .7fr) 1fr; align-items: center; gap: 12px; }
-.question-heading { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
-.question-heading h3 { margin: 0 0 5px; }
-.question-heading small, .timer-box small { display: block; color: var(--muted); margin-bottom: 5px; }
-.question-number { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); font-weight: 700; }
-.answer-input { max-width: 540px; }
-.timer-box { display: grid; text-align: center; }
-.timer-box strong { font-size: 1.5rem; }
-.exam-panel { display: grid; gap: 5px; }
-
-@media (max-width: 980px) { .exam-management-grid { grid-template-columns: 1fr; } }
-@media (max-width: 700px) {
-  .student-welcome, .course-header { align-items: stretch; flex-direction: column; }
-  .student-picker select { min-width: 0; }
-  .course-card-actions, .inline-add-form { flex-direction: column; }
-  .panel-header { align-items: flex-start; gap: 14px; }
-  .panel-header .action-button { white-space: normal; }
-  .participant-list li { align-items: flex-start; flex-wrap: wrap; }
-  .participant-list li .status-pill { margin-left: 48px; }
-  .role-controls button { padding: 9px 10px; }
-  .exam-settings-grid, .question-config-grid { grid-template-columns: 1fr; }
-  .exam-management-card { align-items: flex-start; flex-direction: column; }
-  .matching-editor-row { grid-template-columns: 1fr 22px 1fr 34px; }
-  .builder-option-row { grid-template-columns: minmax(0, 1fr) auto 30px; }
-  .builder-section-title { align-items: flex-start; flex-direction: column; }
-  .matching-list label { grid-template-columns: 1fr; }
+/* Topic resource manager */
+.topic-resource-list { list-style: none; display: grid; gap: 9px; margin: 0 0 14px; padding: 0 0 0 46px; }
+.topic-resource { display: flex; align-items: flex-start; gap: 11px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: #fbfcff; }
+.resource-icon { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center; border-radius: 9px; font-weight: 800; }
+.resource-icon.link { color: #155eef; background: #eaf1ff; }
+.resource-icon.task { color: #16834a; background: #e8f7ed; }
+.topic-resource-body { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.topic-resource-body > strong { color: var(--text); }
+.topic-resource-body p { color: var(--muted); line-height: 1.5; margin: 3px 0; white-space: pre-wrap; }
+.topic-resource-body a { color: var(--primary); font-weight: 700; font-size: .88rem; overflow-wrap: anywhere; }
+.resource-kind { color: var(--muted); font-size: .78rem; }
+.resource-actions { display: flex; gap: 3px; align-items: center; }
+.resource-actions button { padding: 6px; }
+.add-topic-resource { margin: 4px 0 14px 46px; border: 1px dashed #9aadd0; border-radius: 10px; padding: 10px 13px; background: #f7f9ff; color: var(--primary); font-weight: 700; cursor: pointer; }
+.form-error { margin: 0; color: #b42318; font-size: .9rem; }
+@media (max-width: 640px) {
+  .topic-resource-list { padding-left: 0; }
+  .add-topic-resource { margin-left: 0; width: 100%; }
+  .topic-resource { flex-wrap: wrap; }
+  .resource-actions { margin-left: 40px; }
 }
