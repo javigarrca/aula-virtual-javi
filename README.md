@@ -1,68 +1,30 @@
 # Aula Virtual Javi
 
-Plataforma educativa tipo Moodle/Canvas para gestionar cursos, alumnos, tareas, exámenes y recursos didácticos.
+Aula virtual responsive con una organización inspirada en los patrones habituales de un LMS: panel del profesor, área personal del alumno, catálogo, cursos por temas, participantes y actividades.
 
-## Stack
+## Ejecutar
 
-- Next.js 14
-- TypeScript
-- Supabase (almacenamiento y base de datos)
-- Diseño responsive tipo LMS
-
-## Funcionalidades
-
-- Roles: administrador y alumno.
-- Dashboard con resumen de cursos y alumnos.
-- Gestión de cursos y temarios.
-- Materiales descargables y enlaces.
-- Tareas con estados.
-- Exámenes con temporizador y preguntas aleatorias.
-- Integración opcional con Supabase Storage para archivos pesados.
-
-## Inicio rápido
-
-1. Copia `.env.example` a `.env.local`.
-2. Añade tus claves de Supabase:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-3. Instala dependencias:
+Requiere Node.js 18.17+ o 20+.
 
 ```bash
 npm install
-```
-
-4. Ejecuta el proyecto:
-
-```bash
 npm run dev
 ```
 
-5. Abre `http://localhost:3000`.
+Abre `http://localhost:3000`. Para validar: `npm test` y `npm run build`.
 
-## Supabase
+## Interacciones disponibles en la demo
 
-Se incluye un esquema SQL de ejemplo en `supabase/schema.sql` para tablas de perfiles, cursos, alumnos, materiales y exámenes.
+- El panel de profesor permite crear cursos, editar sus datos, añadir temas, añadir alumnos e inscribir alumnos existentes.
+- La vista de alumno tiene “Mis cursos”, catálogo e inscripción a cursos.
+- La página de un curso muestra el temario, los materiales, las tareas y el listado de participantes.
+- Los cambios se guardan en el almacenamiento local del navegador desde el que se usa la demo.
+- El selector de alumno permite probar varias cuentas de ejemplo en el mismo navegador.
 
-## Hosting gratuito recomendado
+## Importante: demo, no todavía un LMS multiusuario
 
-- Vercel: ideal para Next.js y despliegue gratuito.
-- Opción rápida: vincula el repositorio de GitHub y despliega desde Vercel.
-- La URL será algo como `https://aula-virtual-javi.vercel.app` y luego podrás conectar tu dominio propio.
+Esta versión persiste información en `localStorage`, por lo que los datos solo están disponibles en ese navegador/dispositivo. El selector Profesor/Alumno es únicamente una vista de demostración: no autentica usuarios ni protege permisos. No introduzcas datos personales reales ni uses esto para exámenes de verdad todavía. Para compartir cursos entre dispositivos y tener seguridad real hace falta configurar Supabase Auth, tablas con Row Level Security y almacenamiento privado.
 
-## Variables de entorno para producción
+## Supabase y despliegue
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima
-```
-
-## Cómo extenderlo
-
-- Añadir autenticación real con Supabase Auth.
-- Guardar cursos y alumnos en tablas reales.
-- Subir archivos en el bucket `course-materials`.
-- Añadir endpoints para tareas, calificaciones y seguimientos.
-
-## Notas
-
-Este proyecto es una base funcional MVP para un aula virtual con enfoque educativo y fácil de extender.
+Se conserva un esquema inicial en `supabase/schema.sql` y una utilidad de subida preparada en `lib/supabase.ts`; todavía no están conectados a los formularios de esta demo. Para Vercel, conecta el repositorio y ejecuta el despliegue. Los cambios nuevos en `main` deberían iniciar un nuevo deployment automáticamente.
