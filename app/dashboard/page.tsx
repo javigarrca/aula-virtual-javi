@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { courses as seedCourses, students as seedStudents } from '@/lib/mock-data';
-import type { Course, Role, StudentSummary } from '@/lib/types';
+import { students as seedStudents } from '@/lib/mock-data';
+import type { Role, StudentSummary } from '@/lib/types';
 import { createCourse, enrollStudent, getInitialLmsState, readLmsState, saveLmsState, type LmsState } from '@/lib/lms-store';
 
 export default function DashboardPage() {
@@ -26,9 +26,7 @@ export default function DashboardPage() {
     setReady(true);
   }, []);
 
-  useEffect(() => {
-    if (ready) saveLmsState(data);
-  }, [data, ready]);
+  useEffect(() => { if (ready) saveLmsState(data); }, [data, ready]);
 
   const selectedStudent = data.students.find((student) => student.id === studentId) ?? data.students[0];
   const myCourseIds = useMemo(() => new Set(data.enrollments[studentId] ?? []), [data.enrollments, studentId]);
@@ -72,7 +70,7 @@ export default function DashboardPage() {
     setData((current) => ({
       ...current,
       students: [...current.students, newStudent],
-      enrollments: enrollStudent(current, studentForm.courseId, newStudent.id).enrollments,
+      enrollments: enrollStudent({ ...current, students: [...current.students, newStudent] }, studentForm.courseId, newStudent.id).enrollments,
     }));
     setStudentForm({ name: '', email: '', courseId: '' });
     setDialog(null);
@@ -82,9 +80,7 @@ export default function DashboardPage() {
   return (
     <main className="app-shell">
       <aside className="sidebar">
-        <Link href="/dashboard" className="brand-block">
-          <div className="brand-mark">AV</div><div><strong>Aula Virtual</strong><small>Javi</small></div>
-        </Link>
+        <Link href="/dashboard" className="brand-block"><div className="brand-mark">AV</div><div><strong>Aula Virtual</strong><small>Javi</small></div></Link>
         <nav className="nav-list" aria-label="Navegación principal">
           <a className="active" href="#inicio">Panel principal</a>
           <a href="#cursos">{role === 'admin' ? 'Cursos' : 'Mis cursos'}</a>
@@ -105,46 +101,39 @@ export default function DashboardPage() {
 
         {notice && <div className="notice" role="status">{notice}<button type="button" onClick={() => setNotice('')} aria-label="Cerrar aviso">×</button></div>}
 
-        {role === 'admin' ? (
-          <>
-            <div className="dashboard-grid stats-grid">
-              <div className="panel stat-card"><span className="label">Mis cursos</span><strong>{data.courses.length}</strong></div>
-              <div className="panel stat-card"><span className="label">Alumnos registrados</span><strong>{data.students.length}</strong></div>
-              <div className="panel stat-card"><span className="label">Inscripciones</span><strong>{totalEnrollments}</strong></div>
-              <div className="panel stat-card"><span className="label">Tareas por revisar</span><strong>{data.courses.reduce((n, course) => n + course.assignments.filter((task) => task.status === 'submitted').length, 0)}</strong></div>
-            </div>
-
-            <div className="panel section-panel" id="cursos">
-              <div className="panel-header"><div><h2>Mis cursos</h2><p className="muted-copy">Gestiona el contenido y consulta sus participantes.</p></div><button className="action-button" onClick={() => setDialog('course')}>＋ Crear curso</button></div>
-              <CourseCards courses={data.courses} enrollments={data.enrollments} role="admin" />
-            </div>
-
-            <div className="panel section-panel" id="alumnos">
-              <div className="panel-header"><div><h2>Participantes</h2><p className="muted-copy">Alumnos registrados en el aula y sus cursos.</p></div><button className="action-button" onClick={() => setDialog('student')} disabled={data.courses.length === 0}>＋ Añadir alumno</button></div>
-              {data.students.length ? <div className="table-wrap"><table><thead><tr><th>Alumno</th><th>Correo</th><th>Cursos inscritos</th><th>Estado</th></tr></thead><tbody>
-                {data.students.map((student) => {
-                  const enrolled = data.courses.filter((course) => data.enrollments[student.id]?.includes(course.id));
-                  return <tr key={student.id}><td>{student.name}</td><td>{student.email}</td><td>{enrolled.length ? enrolled.map((course) => course.title).join(', ') : 'Sin cursos'}</td><td><span className={`status-pill ${student.status}`}>{student.status}</span></td></tr>;
-                })}
-              </tbody></table></div> : <p className="empty-message">Todavía no hay alumnos. Añade uno para empezar.</p>}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="student-welcome panel">
-              <div><span className="eyebrow">Hola{selectedStudent ? `, ${selectedStudent.name.split(' ')[0]}` : ''}</span><h2>Continúa aprendiendo</h2><p className="muted-copy">Tus cursos y el catálogo están aquí.</p></div>
-              <label className="student-picker">Alumno de demostración<select value={studentId} onChange={(event) => { setStudentId(event.target.value); localStorage.setItem('aula-virtual-student', event.target.value); }}>
-                {data.students.map((student) => <option key={student.id} value={student.id}>{student.name}</option>)}
-              </select></label>
-            </div>
-            <div className="panel section-panel" id="cursos"><div className="panel-header"><div><h2>Mis cursos</h2><p className="muted-copy">Cursos a los que estás inscrito.</p></div></div>
-              {myCourses.length ? <CourseCards courses={myCourses} enrollments={data.enrollments} role="student" /> : <p className="empty-message">Aún no estás inscrito en ningún curso. Explora el catálogo.</p>}
-            </div>
-            <div className="panel section-panel" id="catalogo"><div className="panel-header"><div><h2>Catálogo de cursos</h2><p className="muted-copy">Apúntate a un curso para que aparezca en “Mis cursos”.</p></div></div>
-              {availableCourses.length ? <CourseCards courses={availableCourses} enrollments={data.enrollments} role="student" onEnroll={(courseId) => { setData((current) => enrollStudent(current, courseId, studentId)); setNotice('Inscripción realizada. El curso ya está en Mis cursos.'); }} /> : <p className="empty-message">Ya estás inscrito en todos los cursos disponibles.</p>}
-            </div>
-          </>
-        )}
+        {role === 'admin' ? <>
+          <div className="dashboard-grid stats-grid">
+            <div className="panel stat-card"><span className="label">Mis cursos</span><strong>{data.courses.length}</strong></div>
+            <div className="panel stat-card"><span className="label">Alumnos registrados</span><strong>{data.students.length}</strong></div>
+            <div className="panel stat-card"><span className="label">Inscripciones</span><strong>{totalEnrollments}</strong></div>
+            <div className="panel stat-card"><span className="label">Tareas por revisar</span><strong>{data.courses.reduce((n, course) => n + course.assignments.filter((task) => task.status === 'submitted').length, 0)}</strong></div>
+          </div>
+          <div className="panel section-panel" id="cursos">
+            <div className="panel-header"><div><h2>Mis cursos</h2><p className="muted-copy">Gestiona el contenido y consulta sus participantes.</p></div><button className="action-button" onClick={() => setDialog('course')}>＋ Crear curso</button></div>
+            <CourseCards courses={data.courses} enrollments={data.enrollments} role="admin" />
+          </div>
+          <div className="panel section-panel" id="alumnos">
+            <div className="panel-header"><div><h2>Participantes</h2><p className="muted-copy">Alumnos registrados en el aula y sus cursos.</p></div><button className="action-button" onClick={() => setDialog('student')} disabled={data.courses.length === 0}>＋ Añadir alumno</button></div>
+            {data.students.length ? <div className="table-wrap"><table><thead><tr><th>Alumno</th><th>Correo</th><th>Cursos inscritos</th><th>Estado</th></tr></thead><tbody>
+              {data.students.map((student) => {
+                const enrolled = data.courses.filter((course) => data.enrollments[student.id]?.includes(course.id));
+                return <tr key={student.id}><td>{student.name}</td><td>{student.email}</td><td>{enrolled.length ? enrolled.map((course) => course.title).join(', ') : 'Sin cursos'}</td><td><span className={`status-pill ${student.status}`}>{student.status}</span></td></tr>;
+              })}
+            </tbody></table></div> : <p className="empty-message">Todavía no hay alumnos. Añade uno para empezar.</p>}
+          </div>
+        </> : <>
+          <div className="student-welcome panel"><div><span className="eyebrow">Hola{selectedStudent ? `, ${selectedStudent.name.split(' ')[0]}` : ''}</span><h2>Continúa aprendiendo</h2><p className="muted-copy">Tus cursos y el catálogo están aquí.</p></div>
+            <label className="student-picker">Alumno de demostración<select value={studentId} onChange={(event) => { setStudentId(event.target.value); localStorage.setItem('aula-virtual-student', event.target.value); }}>
+              {data.students.map((student) => <option key={student.id} value={student.id}>{student.name}</option>)}
+            </select></label>
+          </div>
+          <div className="panel section-panel" id="cursos"><div className="panel-header"><div><h2>Mis cursos</h2><p className="muted-copy">Cursos a los que estás inscrito.</p></div></div>
+            {myCourses.length ? <CourseCards courses={myCourses} enrollments={data.enrollments} role="student" /> : <p className="empty-message">Aún no estás inscrito en ningún curso. Explora el catálogo.</p>}
+          </div>
+          <div className="panel section-panel" id="catalogo"><div className="panel-header"><div><h2>Catálogo de cursos</h2><p className="muted-copy">Apúntate a un curso para que aparezca en “Mis cursos”.</p></div></div>
+            {availableCourses.length ? <CourseCards courses={availableCourses} enrollments={data.enrollments} role="student" onEnroll={(courseId) => { setData((current) => enrollStudent(current, courseId, studentId)); setNotice('Inscripción realizada. El curso ya está en Mis cursos.'); }} /> : <p className="empty-message">Ya estás inscrito en todos los cursos disponibles.</p>}
+          </div>
+        </>}
       </section>
 
       {dialog === 'course' && <Modal title="Crear un curso" onClose={() => setDialog(null)}><form className="form-stack" onSubmit={createNewCourse}>
@@ -153,7 +142,6 @@ export default function DashboardPage() {
         <label>Descripción<textarea rows={3} value={courseForm.description} onChange={(event) => setCourseForm({ ...courseForm, description: event.target.value })} placeholder="¿Qué aprenderán los alumnos?" /></label>
         <div className="form-actions"><button type="button" className="ghost-button" onClick={() => setDialog(null)}>Cancelar</button><button className="action-button" type="submit">Crear curso</button></div>
       </form></Modal>}
-
       {dialog === 'student' && <Modal title="Añadir alumno a un curso" onClose={() => setDialog(null)}><form className="form-stack" onSubmit={addStudent}>
         <label>Nombre completo<input required autoFocus value={studentForm.name} onChange={(event) => setStudentForm({ ...studentForm, name: event.target.value })} placeholder="Nombre del alumno" /></label>
         <label>Correo electrónico<input required type="email" value={studentForm.email} onChange={(event) => setStudentForm({ ...studentForm, email: event.target.value })} placeholder="alumno@ejemplo.com" /></label>
@@ -164,11 +152,10 @@ export default function DashboardPage() {
   );
 }
 
-function CourseCards({ courses, enrollments, role, onEnroll }: { courses: Course[]; enrollments: LmsState['enrollments']; role: Role; onEnroll?: (courseId: string) => void }) {
+function CourseCards({ courses, enrollments, role, onEnroll }: { courses: LmsState['courses']; enrollments: LmsState['enrollments']; role: Role; onEnroll?: (courseId: string) => void }) {
   return <div className="cards-grid">{courses.map((course) => {
     const enrolledCount = Object.values(enrollments).filter((ids) => ids.includes(course.id)).length;
-    return <article key={course.id} className="course-card">
-      <span className="course-pill">{course.category}</span><h3>{course.title}</h3><p>{course.description || 'Sin descripción todavía.'}</p>
+    return <article key={course.id} className="course-card"><span className="course-pill">{course.category}</span><h3>{course.title}</h3><p>{course.description || 'Sin descripción todavía.'}</p>
       <div className="course-card-meta"><span>◉ {enrolledCount} participantes</span><span>{course.modules.length} temas</span></div>
       <div className="course-card-actions"><Link href={`/courses/${course.id}`} className="action-button">{role === 'admin' ? 'Gestionar curso' : 'Ver curso'}</Link>{onEnroll && <button className="ghost-button" onClick={() => onEnroll(course.id)}>＋ Apuntarme</button>}</div>
     </article>;
@@ -178,5 +165,3 @@ function CourseCards({ courses, enrollments, role, onEnroll }: { courses: Course
 function Modal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
   return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div className="modal-heading"><h2 id="modal-title">{title}</h2><button type="button" onClick={onClose} aria-label="Cerrar">×</button></div>{children}</section></div>;
 }
-
-export { seedCourses, seedStudents };
