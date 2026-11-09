@@ -1,0 +1,59 @@
+:root {
+  --bg: #f4f5f3;
+  --panel: #ffffff;
+  --border: rgba(37, 49, 65, 0.1);
+  --shadow: 0 10px 28px rgba(34, 48, 65, 0.055);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: #f4f5f3;
+}
+
+.app-shell {
+  background:
+    radial-gradient(ellipse at 86% 4%, rgba(218, 231, 225, 0.38), transparent 34rem),
+    #f4f5f3;
+}
+
+.main-panel,
+.course-shell,
+.exam-shell {
+  background-color: transparent;
+}
+
+.landing-shell {
+  background:
+    radial-gradient(ellipse at 14% 12%, rgba(203, 222, 214, 0.52), transparent 32rem),
+    radial-gradient(ellipse at 88% 90%, rgba(223, 229, 217, 0.55), transparent 34rem),
+    #f4f5f3;
+}
+
+.landing-hero {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(37, 49, 65, 0.1);
+  box-shadow: 0 24px 70px rgba(34, 48, 65, 0.09);
+}
+
+.panel {
+  box-shadow: 0 8px 24px rgba(34, 48, 65, 0.045);
+}
+
+.course-card {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel,
+  .course-card {
+    transition: box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .course-card:hover {
+    box-shadow: 0 14px 30px rgba(34, 48, 65, 0.09);
+  }
+}
